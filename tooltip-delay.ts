@@ -1,8 +1,5 @@
 import type { Point, Tooltip, wrap } from 'highcharts';
 
-const _wrap = window.Highcharts.wrap as typeof wrap;
-const _tooltip = window.Highcharts.Tooltip as typeof Tooltip;
-
 declare module 'highcharts' {
     interface TooltipOptions {
         /**
@@ -12,7 +9,10 @@ declare module 'highcharts' {
     }
 }
 
-const tooltipdelay = function () {
+const tooltipdelay = function (H) {
+    const _wrap = H.wrap as typeof wrap;
+    const _tooltip = H.Tooltip as typeof Tooltip;
+
     const timerIdMap = new Map<string, number>();
 
     const generatePointsUniqueKey = (points: Point[]) => {
@@ -64,6 +64,3 @@ const tooltipdelay = function () {
 }
 
 export default tooltipdelay;
-if (typeof (window as any).module !== "object" || typeof (window as any).module.exports === "object") {
-    tooltipdelay();
-}
